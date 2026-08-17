@@ -4,7 +4,7 @@ A browser roguelite: real-time caverns, fog of war, sanity drain, extraction. A 
 
 This repo is a **portfolio piece** for hiring managers and engineers. The craft on show is **offline procedural cavern generation** in Python; the browser only loads and plays the bank. No bundler, no backend, no accounts. Ships as static files on **Vercel**.
 
-![Welcome Home mission: cavern, sanity HUD, collect-the-fragment prompt](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/play.png)
+![Welcome Home mission: cavern, sanity HUD, collect-the-fragment prompt](screenshots/play.png)
 
 ## Why maps are baked, not rolled in the browser
 
@@ -28,15 +28,15 @@ Level **keys** and **grid sizes** must match between Python and JS. Carve parame
 | Mission | `play.html` | Audio unlock, then the run |
 | Win | `endgame.html?outcome=extract` | Extraction screen |
 
-![Intro: KOMMANDO title, helmet skull, START GAME](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/intro.png)
+![Intro: KOMMANDO title, helmet skull, START GAME](screenshots/intro.png)
 
-![Briefing: classified transmission and palm ASCII](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/briefing.png)
+![Briefing: classified transmission and palm ASCII](screenshots/briefing.png)
 
-![Descend gate: unlock audio](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/descend.png)
+![Descend gate: unlock audio](screenshots/descend.png)
 
 **Win:** clear all five levels. On each level, collect every fragment so EXIT reads OPEN, then step on the pad. Levels 1-4 drop you into the next cavern (ammo carries). After Extraction (level 5), a short victory sting plays and the game opens `endgame.html`: typewriter log, ASCII panel, **[ RESTART LOOP ]** back to the intro. Enter or Space does the same.
 
-![Extraction: end of recording, RESTART LOOP](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/extract.png)
+![Extraction: end of recording, RESTART LOOP](screenshots/extract.png)
 
 **Lose:** sanity hits 0, a drone catches you, a mine finishes you, or the Extraction timer runs out. The canvas melts in place. You stay on `play.html`. **Descend again** retries from level 1; **Restart loop** returns to the intro. There is a collapse script on `endgame.html`, but death never navigates there.
 
@@ -55,7 +55,7 @@ Level **keys** and **grid sizes** must match between Python and JS. Carve parame
 
 Help (`play.html`) lists each of those as its own row with a matching 20px pill. Sprites are fitted to the pill so palms are not cropped.
 
-![Help: commands, pickups, and hazards](https://raw.githubusercontent.com/ironsignalworks/cavern-generator-py/main/screenshots/help.png)
+![Help: commands, pickups, and hazards](screenshots/help.png)
 
 ## Controls
 
