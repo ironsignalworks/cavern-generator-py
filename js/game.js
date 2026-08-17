@@ -6,6 +6,7 @@ import {
 import { spawnMethods } from './spawn.js';
 import { combatMethods } from './combat.js';
 import { renderMethods } from './render.js';
+import { GAMEOVER_SKULL, playAsciiReveal } from './ascii.js';
 
 export class Game {
   constructor(mapBank = null) {
@@ -76,6 +77,8 @@ export class Game {
 
   hideRestartGate() {
     const gate = document.getElementById('restartGate');
+    this._abortAsciiStop?.();
+    this._abortAsciiStop = null;
     if (!gate) return;
     gate.classList.add('hidden');
     gate.setAttribute('aria-hidden', 'true');
@@ -86,6 +89,8 @@ export class Game {
     if (!gate) return;
     gate.classList.remove('hidden');
     gate.setAttribute('aria-hidden', 'false');
+    this._abortAsciiStop?.();
+    this._abortAsciiStop = playAsciiReveal(document.getElementById('abortAscii'), GAMEOVER_SKULL);
     document.getElementById('btnDescendAgain')?.focus({ preventScroll: true });
   }
 

@@ -20,9 +20,12 @@ WEIGHTS = {
 
 def load_skull_lines() -> list[str]:
     raw = (ROOT / "js" / "ascii.js").read_text(encoding="utf-8")
-    if "=" not in raw:
+    marker = "export const SKULL_ASCII ="
+    start = raw.find(marker)
+    if start < 0:
         raise SystemExit("SKULL_ASCII not found in js/ascii.js")
-    art = ast.literal_eval(raw.split("=", 1)[1].strip().rstrip(";"))
+    stmt = raw[start + len(marker) :].split(";", 1)[0].strip()
+    art = ast.literal_eval(stmt)
     return art.split("\n")
 
 
