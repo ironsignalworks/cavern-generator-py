@@ -1,0 +1,222 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Kommando - Fog Of War. Real-Time Caverns v0.8.0</title>
+<link rel="icon" href="./favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="./favicon.png" sizes="32x32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./css/theme.css" />
+<link rel="stylesheet" href="./css/play.css" />
+
+<!-- Primary SEO -->
+<meta name="title" content="KOMMANDO - Fog of War" />
+<meta name="description" content="Dive into real-time caverns where every step echoes madness. Tactical pixel warfare meets paranoia in a collapsing underground world. Welcome to the Fog of War." />
+<meta name="keywords" content="kommando, fog of war, Catastrophic Labs, pixel roguelite, tactical shooter, retro arcade, browser game, real-time caverns, paranoia, extraction" />
+<meta name="author" content="Catastrophic Labs" />
+<link rel="canonical" href="https://catastrophiclabs.com/" />
+
+<!-- Open Graph -->
+<meta property="og:title" content="KOMMANDO - Fog of War" />
+<meta property="og:description" content="Dive into real-time caverns where every step echoes madness. Tactical pixel warfare meets paranoia in a collapsing underground world. Welcome to the Fog of War." />
+<meta property="og:image" content="https://catastrophiclabs.com/card.jpg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:alt" content="KOMMANDO - Fog of War preview image" />
+<meta property="og:url" content="https://catastrophiclabs.com/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Catastrophic Labs" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="KOMMANDO - Fog of War" />
+<meta name="twitter:description" content="Dive into real-time caverns where every step echoes madness. Tactical pixel warfare meets paranoia in a collapsing underground world. Welcome to the Fog of War." />
+<meta name="twitter:image" content="https://catastrophiclabs.com/card.jpg" />
+<meta name="twitter:image:alt" content="KOMMANDO - Fog of War preview image" />
+
+<meta name="theme-color" content="#0a1208" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+
+<script>
+  window.KomAudioFiles = {
+    pickup:      'audio/sfx/pickup.mp3',
+    heal:        'audio/sfx/heal.mp3',
+    mine:        'audio/sfx/mine.mp3',
+    sanity_tick: 'audio/sfx/sanity_tick.mp3',
+    levelup:     'audio/sfx/levelup.mp3',
+    shoot:       'audio/sfx/shot.mp3',
+    intro:       'audio/intro.mp3',
+    deployment:  'audio/deployment.mp3',
+    background:  'audio/background_loop.mp3',
+    sanity:      'audio/sanity_low.mp3',
+    gameover:    'audio/gameover.mp3',
+    victory:     null
+  };
+  window.KomBgmFadeIn = 0.05;
+</script>
+</head>
+<body>
+  <div class="app">
+    <div class="view">
+      <canvas id="screen" width="960" height="576" role="application" aria-label="Kommando game screen"></canvas>
+      <div id="startGate" class="start-gate" role="dialog" aria-modal="true" aria-labelledby="startGateTitle">
+        <div class="dos-shell dialog-shell">
+          <div class="dos-bar" id="startGateTitle">C:\KMD\DEPLOY.BAT</div>
+          <div class="dialog-body">
+            <p>Briefing complete.<br>Unlock audio and descend.</p>
+            <button type="button" id="btnStartGame" class="dos-btn">[ DESCEND ]</button>
+          </div>
+          <div class="dos-bar dos-bar--foot">
+            <span class="desktop-only">ENTER / SPACE</span>
+            <span>KOMMANDO - FOG OF WAR</span>
+          </div>
+        </div>
+      </div>
+      <div id="restartGate" class="start-gate restart-gate hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="restartGateTitle">
+        <div class="dos-shell dialog-shell dialog-shell--brief">
+          <div class="dos-bar" id="restartGateTitle">C:\KMD\ABORT.TXT</div>
+          <div class="abort-frame">
+          <div class="abort-brief" aria-label="Failure briefing">
+            <div class="kicker">TYPE ABORT.TXT</div>
+            <div class="block">[ TRANSMISSION LOST / CLASSIFIED CHANNEL 0XDEAD ]
+
+&gt; OPERATION: FOG OF WAR
+&gt; SUBJECT: JACK KELLER
+&gt; STATUS: EXTRACTION FAILED</div>
+            <div class="sep">────────────</div>
+            <div class="block">Sanity bottoms out.
+The cavern folds in on itself.
+You do not reach the pad.</div>
+            <div class="block">The radio hisses:
+&gt; “They never left the jungle, Kommando…”</div>
+            <div class="sep">────────────</div>
+            <div class="block">[ FINAL MESSAGE: LOOP REINITIALIZED ]
+The cycle begins again.</div>
+          </div>
+          <div class="abort-actions">
+            <a id="btnRestartLoop" class="dos-btn" href="index.html">[ RESTART LOOP ]</a>
+            <button type="button" id="btnDescendAgain" class="dos-btn">[ DESCEND AGAIN ]</button>
+          </div>
+          </div>
+          <div class="dos-bar dos-bar--foot">
+            <span>ENTER=DESCEND AGAIN</span>
+            <span>EXTRACTION FAILED</span>
+          </div>
+        </div>
+      </div>
+      <div class="sting-layer" aria-live="polite">
+        <div id="warnStack" class="warn-stack">
+          <div id="warnSanity" class="warn-item is-danger hidden">SANITY LOW</div>
+          <div id="warnExit" class="warn-item hidden">EXIT UNLOCKED</div>
+        </div>
+        <div id="toast" class="toast hidden" role="status"></div>
+      </div>
+      <div id="pauseGate" class="start-gate pause-gate hidden" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="pauseGateTitle">
+        <div class="dos-shell dialog-shell">
+          <div class="dos-bar" id="pauseGateTitle">C:\KMD\PAUSE.COM</div>
+          <div class="dialog-body">
+            <p>Sanity holds. The cavern waits.</p>
+            <button type="button" id="btnResume" class="dos-btn">[ RESUME ]</button>
+          </div>
+          <div class="dos-bar dos-bar--foot">
+            <span class="desktop-only">ESC</span>
+            <span>KOMMANDO - FOG OF WAR</span>
+          </div>
+        </div>
+      </div>
+      <div class="touch-controls" aria-hidden="true">
+        <div class="stick" id="stick" aria-label="Move">
+          <div class="nub" id="stickNub"></div>
+        </div>
+        <button type="button" class="fire-btn" id="btnFire" aria-label="Fire">[FIRE]</button>
+      </div>
+    </div>
+
+    <div class="hud-bottom" role="toolbar" aria-label="Game status">
+      <span class="hud-level-row">
+        <span class="hud-label">LV</span>
+        <span id="levelName" class="hud-value">--</span>
+      </span>
+      <span class="hud-sep hud-sep--level" aria-hidden="true">│</span>
+      <div class="hud-stats">
+        <div class="hud-stat-row">
+          <span class="hud-label">SAN</span>
+          <span id="sanityBar" class="hud-meter" role="progressbar" aria-label="Sanity" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">██████████</span>
+          <span id="sanityPct" class="hud-value hud-value--pct">100%</span>
+        </div>
+        <span class="hud-sep" aria-hidden="true">│</span>
+        <div class="hud-stat-row hud-stat-row--dense">
+          <span class="hud-chip"><span class="hud-label">FRAG</span> <span id="diamonds" class="hud-num">0/0</span></span>
+          <span class="hud-chip"><span class="hud-label">AMMO</span> <span id="ammoCount" class="hud-num">24</span></span>
+          <span class="hud-chip"><span class="hud-label">EXIT</span> <span id="exitState" class="hud-num">LOCK</span></span>
+          <span class="hud-chip hud-chip--timer hidden" id="extractChip"><span class="hud-label">EXT</span> <span id="extractSecs" class="hud-num">20</span>s</span>
+        </div>
+      </div>
+      <div class="hud-icon-row">
+        <button type="button" id="btnPause" class="btn-icon" title="Pause (Esc)" aria-label="Pause">[P]</button>
+        <button type="button" id="btnMute" class="btn-icon" title="Mute" aria-label="Mute" aria-pressed="false">[SND]</button>
+        <button type="button" id="btnInstructions" class="btn-instructions" aria-haspopup="dialog" aria-controls="instructionsModal" title="How to play" aria-label="Help">[?]</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="instructionsModal" role="dialog" aria-modal="true" aria-labelledby="instrTitle" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-sheet">
+      <h2 id="instrTitle">HELP: COMMANDS</h2>
+      <ul class="instr-list">
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="commando" aria-hidden="true"></canvas>
+          <span><b>Move:</b> WASD or Arrow Keys</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="commando" aria-hidden="true"></canvas>
+          <span><b>Fire:</b> Space (mobile: FIRE)</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="diamond" aria-hidden="true"></canvas>
+          <span>Collect all memory fragments</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="exit" aria-hidden="true"></canvas>
+          <span>Step on the Exit once it is OPEN</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="seed" aria-hidden="true"></canvas>
+          <span>Sanity drains over time. Fragments and seeds restore it</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="enemy" aria-hidden="true"></canvas>
+          <span>Drones patrol and will chase if they see you</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="palm" aria-hidden="true"></canvas>
+          <span>Palm trees provide camouflage from drones</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="mine" aria-hidden="true"></canvas>
+          <span>Mines hurt sanity and can scramble your controls</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="ammo" aria-hidden="true"></canvas>
+          <span>Ammo crates restock your magazine</span>
+        </li>
+        <li>
+          <canvas class="instr-icon" width="20" height="20" data-sprite="ghost" aria-hidden="true"></canvas>
+          <span>Ghosts (Paranoia) drain sanity on contact</span>
+        </li>
+      </ul>
+      <div class="modal-actions">
+        <button type="button" id="btnCloseInstructions" class="btn-instructions">[ ESC ]</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./audio.js"></script>
+  <script type="module" src="./js/boot.js"></script>
+</body>
+</html>

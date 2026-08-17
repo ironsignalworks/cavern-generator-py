@@ -1,0 +1,10 @@
+.cursor
+.github
+.venv
+venv
+__pycache__
+*.pyc
+tools
+.env
+.env.*
+*.log

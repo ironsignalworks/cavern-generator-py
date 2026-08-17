@@ -1,0 +1,176 @@
+/* Shared tokens: VGA text-mode (DOS) */
+:root {
+  --bg: #000000;
+  --bg-elev: #000000;
+  --ink: #55ff55;
+  --ink-soft: #00aa00;
+  --ink-muted: #007700;
+  --muted: #00aa00;
+  --hud: #000000;
+  --hud2: #000000;
+  --hud-border: #00aa00;
+  --hud-hi: #003300;
+  --hud-lo: #000000;
+  --accent: #55ff55;
+  --accent-2: #55ff55;
+  --accent-dim: #00aa00;
+  --danger: #ff5555;
+  --red-core: #aa0000;
+  --warn: #ffff55;
+  --cyan: #55ffff;
+
+  --surface: #000000;
+  --surface-2: #000000;
+  --border: #00aa00;
+
+  --glow-soft: none;
+  --glow-strong: none;
+
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --shadow-hud: none;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --view-pad-top: max(4px, env(safe-area-inset-top, 0px));
+  --hud-stack: min(92dvh, 100vh);
+
+  --font-hud: "VT323", "Courier New", Courier, monospace;
+  --font-display: "VT323", "Courier New", Courier, monospace;
+
+  scrollbar-color: var(--ink) #001800;
+  scrollbar-width: thin;
+}
+
+html {
+  font-family: var(--font-hud);
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+}
+
+*::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+*::-webkit-scrollbar-track {
+  background: #000;
+  border: 2px solid var(--ink-soft);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--ink-soft);
+  border: 2px solid #000;
+  box-shadow: inset 0 0 0 1px var(--ink);
+}
+*::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:active {
+  background: var(--ink);
+}
+*::-webkit-scrollbar-corner {
+  background: #000;
+  border: 2px solid var(--ink-soft);
+}
+*::-webkit-scrollbar-button {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background-color: #000;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid var(--ink-soft);
+}
+*::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='4,1 7,6 1,6' fill='%2355ff55'/></svg>");
+}
+*::-webkit-scrollbar-button:vertical:increment {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='1,2 7,2 4,7' fill='%2355ff55'/></svg>");
+}
+*::-webkit-scrollbar-button:horizontal:decrement {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='1,4 6,1 6,7' fill='%2355ff55'/></svg>");
+}
+*::-webkit-scrollbar-button:horizontal:increment {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><polygon points='2,1 7,4 2,7' fill='%2355ff55'/></svg>");
+}
+*::-webkit-scrollbar-button:vertical:start:increment,
+*::-webkit-scrollbar-button:vertical:end:decrement,
+*::-webkit-scrollbar-button:horizontal:start:increment,
+*::-webkit-scrollbar-button:horizontal:end:decrement {
+  display: none;
+}
+*::-webkit-scrollbar-button:hover {
+  background-color: #003300;
+}
+
+.dos-shell{
+  display:flex;
+  flex-direction:column;
+  background:#000;
+  color:var(--ink);
+  border:2px solid var(--ink);
+  box-sizing:border-box;
+}
+.dos-bar{
+  flex:0 0 auto;
+  background:var(--ink);
+  color:#000;
+  font-family:var(--font-hud);
+  font-size:clamp(16px, 2.4vw, 20px);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:2px 10px;
+  line-height:1.2;
+}
+.dos-bar--foot{
+  background:#000;
+  color:var(--ink-soft);
+  border-top:2px solid var(--ink);
+  font-size:clamp(14px, 2vw, 18px);
+  text-transform:none;
+  letter-spacing:.04em;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.dos-bar--foot a{
+  color:var(--cyan);
+  text-decoration:none;
+}
+.dos-bar--foot a:hover{ color:var(--warn); }
+
+.dos-btn{
+  display:inline-block;
+  font-family:var(--font-hud);
+  font-size:clamp(16px, 2.2vw, 22px);
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  text-decoration:none;
+  text-align:center;
+  border:2px solid var(--ink);
+  background:var(--ink);
+  color:#000;
+  padding:6px 14px;
+  margin:0;
+  cursor:pointer;
+  border-radius:0;
+  box-shadow:none;
+  appearance:none;
+  touch-action:manipulation;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.dos-btn:hover,
+.dos-btn:focus-visible{
+  outline:none;
+  background:var(--warn);
+  border-color:var(--warn);
+  color:#000;
+  filter:none;
+  transform:none;
+}
+.dos-btn:active{
+  background:#000;
+  color:var(--ink);
+  border-color:var(--ink);
+}
