@@ -268,8 +268,8 @@ npx vercel          # preview
 npx vercel --prod   # production
 ```
 
-No env vars. After changing room counts or grid sizes, regenerate maps and commit `data/maps.json` in the same change or the live bank will be stale. Point a domain (for example [catastrophiclabs.com](https://catastrophiclabs.com/)) at the Vercel project when you want a custom host.
+No env vars. After changing room counts or grid sizes, regenerate maps and commit `data/maps.json` in the same change or the live bank will be stale. 
 
 ## License
 
-[MIT](./LICENSE). [Catastrophic Labs](https://catastrophiclabs.com/), 2026.
+[MIT](./LICENSE). [Catastrophic Labs](https://kommando-fog-of-war-py.vercel.app/), 2026.
